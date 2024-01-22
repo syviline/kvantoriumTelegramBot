@@ -10,39 +10,34 @@ def start(message):
 
 def get_markup():
     markup = types.InlineKeyboardMarkup(row_width=2)
-    btnMedia = types.InlineKeyboardButton('Медиа квантум', callback_data='media')
-    btnRobo = types.InlineKeyboardButton('Робо квантум', callback_data='robo')
-    btnDesign = types.InlineKeyboardButton('Промышленный дизайн', callback_data='design')
-    btnIT = types.InlineKeyboardButton('IT-квантум', callback_data='it')
-    btnHiTech = types.InlineKeyboardButton('Hi-Tech цех', callback_data='hitech')
-    btnAuto = types.InlineKeyboardButton('Автоквантум', callback_data='auto')
-    btnAero = types.InlineKeyboardButton('Аэроквантум', callback_data='aero')
-    btnNano = types.InlineKeyboardButton('Наноквантум', callback_data='nano')
-    btnGeo = types.InlineKeyboardButton('Геоквантум', callback_data='geo')
-    btnBio = types.InlineKeyboardButton('Биоквантум', callback_data='bio')
-    btnEnergy = types.InlineKeyboardButton('Энерджиквантум', callback_data='energy')
-    btnVRAR = types.InlineKeyboardButton('VR/AR квантум', callback_data='vrar')
-    btnIdk = types.InlineKeyboardButton('Я не знаю', callback_data='idk')
-    markup.add(btnMedia, btnRobo, btnDesign, btnIT, btnHiTech, btnAuto, btnAero, btnNano, btnGeo, btnBio, btnEnergy, btnVRAR, btnIdk)
+    # Добавлены кнопки для всех направлений
+    btns = [types.InlineKeyboardButton(name, callback_data=data) for name, data in [
+        ('Робоквантум', 'robo'), ('Промдизайн', 'design'), ('IT-квантум', 'it'),
+        ('Hi-Tech цех', 'hitech'), ('Автоквантум', 'auto'), ('Аэроквантум', 'aero'),
+        ('Наноквантум', 'nano'), ('Геоквантум', 'geo'), ('Биоквантум', 'bio'),
+        ('Энерджиквантум', 'energy'), ('VR квантум', 'vr'), ('Я не знаю', 'idk')
+    ]]
+    markup.add(*btns)
     return markup
+
+directions_descriptions = {
+    'robo': 'Робоквантум: Основан на проектировании и управлении робототехническими системами.',
+    'design': 'Промдизайн: Фокусируется на проектировании объектов массового производства.',
+    'it': 'IT-квантум: Сосредоточен на информационных технологиях для решения прикладных задач.',
+    'hitech': 'Hi-Tech цех: Занимается передовыми технологиями для материализации проектов.',
+    'auto': 'Автоквантум: Включает разработки в области наземного транспорта, проектирование и конструирование.',
+    'aero': 'Аэроквантум: Ориентирован на создание летательных аппаратов, включая беспилотные.',
+    'nano': 'Наноквантум: Охватывает исследование на наноразмерном уровне и создание новых материалов.',
+    'geo': 'Геоквантум: Работа с геоинформационными технологиями и пространственными данными.',
+    'bio': 'Биоквантум: Инженерно-биологические системы, прикладная биология и биотехнологии.',
+    'energy': 'Энерджиквантум: Знакомство с основами традиционной и альтернативной энергетики.',
+    'vr': 'VR квантум: Разработка приложений виртуальной, дополненной и смешанной реальности.',
+    'idk': 'Если вы не знаете какое направление вам выбрать, предлагаем пройти тест!'
+}
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
-    directions = {
-        'media': 'Медиа квантум',
-        'robo': 'Робо квантум',
-        'design': 'Промышленный дизайн',
-        'it': 'IT-квантум',
-        'hitech': 'Hi-Tech цех',
-        'auto': 'Автоквантум',
-        'aero': 'Аэроквантум',
-        'nano': 'Наноквантум',
-        'geo': 'Геоквантум',
-        'bio': 'Биоквантум',
-        'energy': 'Энерджиквантум',
-        'vrar': 'VR/AR квантум',
-        'idk': 'Если вы не знаете какое направление вам выбрать, предлагаем пройти тест!'
-    }
-    bot.answer_callback_query(call.id, f'Вы выбрали {directions[call.data]}')
+    chat_id = call.message.chat.id
+    bot.send_message(chat_id, directions_descriptions.get(call.data, 'Выбрано неизвестное направление'))
 
 bot.polling(none_stop=True)
