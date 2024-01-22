@@ -1,6 +1,8 @@
 import telebot
 from telebot import types
 from config import TOKEN
+import user_profile
+import education_module
 
 bot = telebot.TeleBot(TOKEN)
 
