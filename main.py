@@ -93,6 +93,8 @@ def start_test_command(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
+    if call.data == 'idk':
+        start_test_command(call.message)
     if '_' in call.data:
         handle_test_answer(call)
     else:
