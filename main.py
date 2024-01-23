@@ -95,7 +95,7 @@ def start_test_command(message):
 def callback_query(call):
     if call.data == 'idk':
         start_test_command(call.message)
-    if '_' in call.data:
+    elif '_' in call.data:
         handle_test_answer(call)
     else:
         chat_id = call.message.chat.id
